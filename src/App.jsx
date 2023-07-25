@@ -3,12 +3,10 @@ import styles from './App.module.css';
 import { WebAuthn } from 'capacitor-native-passkey'
 
 function App() {
-  const onClick = async () => {
-    const isReady = await WebAuthn.isWebAuthnAvailable()
-    // alert(isReady.value)
+  const onRegister = async () => {
     // alert(location.href)
     try {
-      await WebAuthn.startRegistration({
+      const res = await WebAuthn.startRegistration({
         "user": {
           "id": "227cc20b-86bb-4719-80d8-22af0ae967dc",
           "name": "JoyID 2023-07-25 15:47:08",
@@ -37,10 +35,27 @@ function App() {
           }
         ]
       })
+      alert(JSON.stringify(res))
     } catch (error) {
       alert(JSON.stringify(error))
     }
   }
+
+  const onRecover = async () => {
+    try {
+      const res = await WebAuthn.startAuthentication({
+        "challenge": "-4jq3HNSNHJG6KvWJQuSkksER_Xj2dtDu5pRG_utt6Y",
+        "allowCredentials": [],
+        "userVerification": "required",
+        rpId: 'app.joyid.dev'
+      }) 
+      alert(JSON.stringify(res))
+    } catch (error) {
+      alert(JSON.stringify(error))
+    }
+
+  }
+
   return (
     <div class={styles.App}>
       <header class={styles.header}>
@@ -48,7 +63,8 @@ function App() {
         <p>
           Edit <code>src/App.jsx</code> and save to reload.
         </p>
-        <button onClick={onClick}>Detect Webauthn</button>
+        <button onClick={onRegister}>Register</button>
+        <button onClick={onRecover} style={{ "margin-top": '50px' }}>Recover</button>
       </header>
     </div>
   );
