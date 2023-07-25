@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">solid</string>
+    <string name="title_activity_main">solid</string>
+    <string name="package_name">dev.joyid.app</string>
+    <string name="custom_url_scheme">dev.joyid.app</string>
+    <string name="asset_statements" translatable="false">
+        [{
+        \"include\": \"https://app.joyid.dev/.well-known/assetlinks.json\"
+        }]
+    </string>
+</resources>
