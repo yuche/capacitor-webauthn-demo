@@ -3,6 +3,11 @@ import styles from './App.module.css';
 import { WebAuthn } from 'capacitor-native-passkey'
 import { createSignal } from 'solid-js'
 
+function randomBase64ID() {
+  return btoa(Math.random().toString(36))
+}
+
+
 function App() {
   const [loggedCid, setLoggedCid] = createSignal('')
   const onRegister = async () => {
@@ -11,7 +16,7 @@ function App() {
       const now = Date.now()
       const res = await WebAuthn.startRegistration({
         "user": {
-          "id": "227cc20b-86bb-4719-80d8-22af0ae967dc",
+          "id": randomBase64ID(),
           "name": `JoyID ${now}`,
           "displayName": `JoyID ${now}`
         },
@@ -65,7 +70,20 @@ function App() {
     } catch (error) {
       alert(JSON.stringify(error))
     }
+  }
 
+  const onRecover2 = async () => {
+    try {
+      const res = await WebAuthn.startAuthentication({
+        "challenge": "-4jq3HNSNHJG6KvWJQuSkksER_Xj2dtDu5pRG_utt6Y",
+        "allowCredentials": [],
+        "userVerification": "required",
+        rpId: 'joyid-app-git-mobile-test-nervina.vercel.app'
+      })
+      alert(JSON.stringify(res))
+    } catch (error) {
+      alert(JSON.stringify(error))
+    }
   }
 
   return (
@@ -76,7 +94,8 @@ function App() {
           Edit <code>src/App.jsx</code> and save to reload.
         </p>
         <button onClick={onRegister}>Register</button>
-        <button onClick={onRecover} style={{ "margin-top": '50px' }}>Recover</button>
+        <button onClick={onRecover} style={{ "margin-top": '50px' }}>Recover single</button>
+        <button onClick={onRecover2} style={{ "margin-top": '50px' }}>Recover multiple</button>
       </header>
     </div>
   );
