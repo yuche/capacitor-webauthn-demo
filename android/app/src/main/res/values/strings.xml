@@ -6,7 +6,7 @@
     <string name="custom_url_scheme">dev.joyid.app</string>
     <string name="asset_statements" translatable="false">
         [{
-        \"include\": \"https://app.joyid.dev/.well-known/assetlinks.json\"
+        \"include\": \"https://joyid-app-git-mobile-test-nervina.vercel.app/.well-known/assetlinks.json\"
         }]
     </string>
 </resources>

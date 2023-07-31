@@ -1,16 +1,19 @@
 import logo from './logo.svg';
 import styles from './App.module.css';
 import { WebAuthn } from 'capacitor-native-passkey'
+import { createSignal } from 'solid-js'
 
 function App() {
+  const [loggedCid, setLoggedCid] = createSignal('')
   const onRegister = async () => {
     // alert(location.href)
     try {
+      const now = Date.now()
       const res = await WebAuthn.startRegistration({
         "user": {
           "id": "227cc20b-86bb-4719-80d8-22af0ae967dc",
-          "name": "JoyID 2023-07-25 15:47:08",
-          "displayName": "JoyID 2023-07-25 15:47:08"
+          "name": `JoyID ${now}`,
+          "displayName": `JoyID ${now}`
         },
         "authenticatorSelection": {
           "userVerification": "required",
@@ -20,7 +23,7 @@ function App() {
         },
         "challenge": "mVi_4nnrnuRGG7OBcPpcnzi7Zh6E_C56aXm-EJl4v6k",
         "rp": {
-          "id": "app.joyid.dev",
+          "id": "joyid-app-git-mobile-test-nervina.vercel.app",
           "name": "JoyID"
         },
         "excludeCredentials": [],
@@ -35,6 +38,7 @@ function App() {
           }
         ]
       })
+      setLoggedCid(res.id)
       alert(JSON.stringify(res))
     } catch (error) {
       alert(JSON.stringify(error))
@@ -43,12 +47,20 @@ function App() {
 
   const onRecover = async () => {
     try {
+      if (!loggedCid()) {
+        alert('Please register first')
+        return
+      }
       const res = await WebAuthn.startAuthentication({
         "challenge": "-4jq3HNSNHJG6KvWJQuSkksER_Xj2dtDu5pRG_utt6Y",
-        "allowCredentials": [],
+        "allowCredentials": [{
+          "id": loggedCid(),
+          type: 'public-key',
+          'transports': ['internal']
+        }],
         "userVerification": "required",
-        rpId: 'app.joyid.dev'
-      }) 
+        rpId: 'joyid-app-git-mobile-test-nervina.vercel.app'
+      })
       alert(JSON.stringify(res))
     } catch (error) {
       alert(JSON.stringify(error))

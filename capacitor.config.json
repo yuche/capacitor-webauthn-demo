@@ -5,6 +5,6 @@
   "bundledWebRuntime": false,
   "server": {
     "androidScheme": "https",
-    "hostname": "app.joyid.dev"
+    "hostname": "joyid-app-git-mobile-test-nervina.vercel.app"
   }
 }
